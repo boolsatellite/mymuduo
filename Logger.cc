@@ -1,5 +1,8 @@
 #include "Logger.h"
+#include "TimeStamp.h"
+
 #include <iostream>
+
 
 Logger &Logger::getInstance()
 {
@@ -33,5 +36,5 @@ void Logger::log(std::string msg)
     }
     
     //打印时间
-    std::cout << "print time" << ":" << msg <<std::endl;
+    std::cout << TimeStamp::now().toString() << ":" << msg <<std::endl;
 }
