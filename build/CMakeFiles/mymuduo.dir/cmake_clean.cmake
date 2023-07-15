@@ -1,8 +1,14 @@
 file(REMOVE_RECURSE
   "../lib/libmymuduo.pdb"
   "../lib/libmymuduo.so"
+  "CMakeFiles/mymuduo.dir/Channel.cc.o"
+  "CMakeFiles/mymuduo.dir/Channel.cc.o.d"
+  "CMakeFiles/mymuduo.dir/EventLoop.cc.o"
+  "CMakeFiles/mymuduo.dir/EventLoop.cc.o.d"
   "CMakeFiles/mymuduo.dir/Logger.cc.o"
   "CMakeFiles/mymuduo.dir/Logger.cc.o.d"
+  "CMakeFiles/mymuduo.dir/TcpServer.cc.o"
+  "CMakeFiles/mymuduo.dir/TcpServer.cc.o.d"
   "CMakeFiles/mymuduo.dir/TimeStamp.cc.o"
   "CMakeFiles/mymuduo.dir/TimeStamp.cc.o.d"
 )
