@@ -6,6 +6,11 @@
 },
 {
   "directory": "/mnt/d/github/mymuduo/build",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/DefaultPoller.cc.o -c /mnt/d/github/mymuduo/DefaultPoller.cc",
+  "file": "/mnt/d/github/mymuduo/DefaultPoller.cc"
+},
+{
+  "directory": "/mnt/d/github/mymuduo/build",
   "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/EventLoop.cc.o -c /mnt/d/github/mymuduo/EventLoop.cc",
   "file": "/mnt/d/github/mymuduo/EventLoop.cc"
 },
@@ -13,6 +18,11 @@
   "directory": "/mnt/d/github/mymuduo/build",
   "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Logger.cc.o -c /mnt/d/github/mymuduo/Logger.cc",
   "file": "/mnt/d/github/mymuduo/Logger.cc"
+},
+{
+  "directory": "/mnt/d/github/mymuduo/build",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Poller.cc.o -c /mnt/d/github/mymuduo/Poller.cc",
+  "file": "/mnt/d/github/mymuduo/Poller.cc"
 },
 {
   "directory": "/mnt/d/github/mymuduo/build",

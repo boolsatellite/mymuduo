@@ -153,6 +153,30 @@ Channel.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mymuduo.dir/build.make CMakeFiles/mymuduo.dir/Channel.cc.s
 .PHONY : Channel.cc.s
 
+DefaultPoller.o: DefaultPoller.cc.o
+.PHONY : DefaultPoller.o
+
+# target to build an object file
+DefaultPoller.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mymuduo.dir/build.make CMakeFiles/mymuduo.dir/DefaultPoller.cc.o
+.PHONY : DefaultPoller.cc.o
+
+DefaultPoller.i: DefaultPoller.cc.i
+.PHONY : DefaultPoller.i
+
+# target to preprocess a source file
+DefaultPoller.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mymuduo.dir/build.make CMakeFiles/mymuduo.dir/DefaultPoller.cc.i
+.PHONY : DefaultPoller.cc.i
+
+DefaultPoller.s: DefaultPoller.cc.s
+.PHONY : DefaultPoller.s
+
+# target to generate assembly for a file
+DefaultPoller.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mymuduo.dir/build.make CMakeFiles/mymuduo.dir/DefaultPoller.cc.s
+.PHONY : DefaultPoller.cc.s
+
 EventLoop.o: EventLoop.cc.o
 .PHONY : EventLoop.o
 
@@ -200,6 +224,30 @@ Logger.s: Logger.cc.s
 Logger.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mymuduo.dir/build.make CMakeFiles/mymuduo.dir/Logger.cc.s
 .PHONY : Logger.cc.s
+
+Poller.o: Poller.cc.o
+.PHONY : Poller.o
+
+# target to build an object file
+Poller.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mymuduo.dir/build.make CMakeFiles/mymuduo.dir/Poller.cc.o
+.PHONY : Poller.cc.o
+
+Poller.i: Poller.cc.i
+.PHONY : Poller.i
+
+# target to preprocess a source file
+Poller.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mymuduo.dir/build.make CMakeFiles/mymuduo.dir/Poller.cc.i
+.PHONY : Poller.cc.i
+
+Poller.s: Poller.cc.s
+.PHONY : Poller.s
+
+# target to generate assembly for a file
+Poller.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mymuduo.dir/build.make CMakeFiles/mymuduo.dir/Poller.cc.s
+.PHONY : Poller.cc.s
 
 TcpServer.o: TcpServer.cc.o
 .PHONY : TcpServer.o
@@ -261,12 +309,18 @@ help:
 	@echo "... Channel.o"
 	@echo "... Channel.i"
 	@echo "... Channel.s"
+	@echo "... DefaultPoller.o"
+	@echo "... DefaultPoller.i"
+	@echo "... DefaultPoller.s"
 	@echo "... EventLoop.o"
 	@echo "... EventLoop.i"
 	@echo "... EventLoop.s"
 	@echo "... Logger.o"
 	@echo "... Logger.i"
 	@echo "... Logger.s"
+	@echo "... Poller.o"
+	@echo "... Poller.i"
+	@echo "... Poller.s"
 	@echo "... TcpServer.o"
 	@echo "... TcpServer.i"
 	@echo "... TcpServer.s"

@@ -51,7 +51,9 @@
 				1,
 				2,
 				3,
-				4
+				4,
+				5,
+				6
 			]
 		}
 	],
@@ -84,7 +86,9 @@
 				1,
 				2,
 				3,
-				4
+				4,
+				5,
+				6
 			]
 		}
 	],
@@ -99,6 +103,12 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
+			"path" : "DefaultPoller.cc",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
 			"path" : "EventLoop.cc",
 			"sourceGroupIndex" : 0
 		},
@@ -106,6 +116,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "Logger.cc",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Poller.cc",
 			"sourceGroupIndex" : 0
 		},
 		{
