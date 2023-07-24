@@ -17,5 +17,4 @@ namespace CurrentThread
         }
         return t_cachedTid;
     }
-
 }

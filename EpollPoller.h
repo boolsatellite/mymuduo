@@ -7,7 +7,7 @@
 
 class Channel;
 
-class EPollPoller : Poller
+class EPollPoller :public Poller
 {
 public:
     EPollPoller(EventLoop* loop);

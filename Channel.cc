@@ -28,14 +28,14 @@ void Channel::update()
 {
     //通过channel中所属的EventLoop调用poller对应的方法，注册fd的events
     //add code
-    //loop_->updateChannel(this);
+    loop_->updateChannel(this);
 }
 
 void Channel::remove()
 {
     //在Channel所属的EventLoop中将当前的Channel删除掉
     //add code
-    //loop_->removeChannel(this);
+    loop_->removeChannel(this);
 }
 
 void Channel::handleEvent(TimeStamp receiveTime)

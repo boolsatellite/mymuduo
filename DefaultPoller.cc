@@ -18,7 +18,6 @@ Poller* Poller::newdefautPoller(EventLoop * loop)
     }
     else
     {
-        // return new EpollPoller(loop);
-        return nullptr;   //生成epoll实例
+        return new EPollPoller(loop);
     }
 }

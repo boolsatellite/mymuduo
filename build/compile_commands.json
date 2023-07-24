@@ -6,6 +6,11 @@
 },
 {
   "directory": "/mnt/d/github/mymuduo/build",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/CurrentThread.cc.o -c /mnt/d/github/mymuduo/CurrentThread.cc",
+  "file": "/mnt/d/github/mymuduo/CurrentThread.cc"
+},
+{
+  "directory": "/mnt/d/github/mymuduo/build",
   "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/DefaultPoller.cc.o -c /mnt/d/github/mymuduo/DefaultPoller.cc",
   "file": "/mnt/d/github/mymuduo/DefaultPoller.cc"
 },
