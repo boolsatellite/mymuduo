@@ -17,6 +17,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/mymuduo.dir/Poller.cc.o.d"
   "CMakeFiles/mymuduo.dir/TcpServer.cc.o"
   "CMakeFiles/mymuduo.dir/TcpServer.cc.o.d"
+  "CMakeFiles/mymuduo.dir/Thread.cc.o"
+  "CMakeFiles/mymuduo.dir/Thread.cc.o.d"
   "CMakeFiles/mymuduo.dir/TimeStamp.cc.o"
   "CMakeFiles/mymuduo.dir/TimeStamp.cc.o.d"
 )

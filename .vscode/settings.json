@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "variant": "cpp"
-    }
+        "variant": "cpp",
+        "atomic": "cpp"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }
