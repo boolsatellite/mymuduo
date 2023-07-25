@@ -13,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/mymuduo.dir/EventLoop.cc.o.d"
   "CMakeFiles/mymuduo.dir/EventLoopThread.cc.o"
   "CMakeFiles/mymuduo.dir/EventLoopThread.cc.o.d"
+  "CMakeFiles/mymuduo.dir/EventLoopThreadPool.cc.o"
+  "CMakeFiles/mymuduo.dir/EventLoopThreadPool.cc.o.d"
   "CMakeFiles/mymuduo.dir/Logger.cc.o"
   "CMakeFiles/mymuduo.dir/Logger.cc.o.d"
   "CMakeFiles/mymuduo.dir/Poller.cc.o"
