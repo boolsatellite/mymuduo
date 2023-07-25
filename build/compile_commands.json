@@ -26,6 +26,11 @@
 },
 {
   "directory": "/mnt/d/github/mymuduo/build",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/EventLoopThread.cc.o -c /mnt/d/github/mymuduo/EventLoopThread.cc",
+  "file": "/mnt/d/github/mymuduo/EventLoopThread.cc"
+},
+{
+  "directory": "/mnt/d/github/mymuduo/build",
   "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Logger.cc.o -c /mnt/d/github/mymuduo/Logger.cc",
   "file": "/mnt/d/github/mymuduo/Logger.cc"
 },
