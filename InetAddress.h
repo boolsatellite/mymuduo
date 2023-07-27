@@ -2,6 +2,7 @@
 
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <sys/socket.h>
 #include <string>
 
 //封装socket地址类型
@@ -18,6 +19,7 @@ public:
     uint16_t toPort() const;
 
     const sockaddr * getSockAddr() const { return (sockaddr*)&addr_; }
+    void setSockAddrInet(struct sockaddr_in& addr) { addr_ = addr; }
 private:
     sockaddr_in addr_;
 };

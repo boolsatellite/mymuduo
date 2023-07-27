@@ -36,6 +36,11 @@
 },
 {
   "directory": "/mnt/d/github/mymuduo/build",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/InetAddress.cc.o -c /mnt/d/github/mymuduo/InetAddress.cc",
+  "file": "/mnt/d/github/mymuduo/InetAddress.cc"
+},
+{
+  "directory": "/mnt/d/github/mymuduo/build",
   "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Logger.cc.o -c /mnt/d/github/mymuduo/Logger.cc",
   "file": "/mnt/d/github/mymuduo/Logger.cc"
 },
@@ -43,6 +48,11 @@
   "directory": "/mnt/d/github/mymuduo/build",
   "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Poller.cc.o -c /mnt/d/github/mymuduo/Poller.cc",
   "file": "/mnt/d/github/mymuduo/Poller.cc"
+},
+{
+  "directory": "/mnt/d/github/mymuduo/build",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Socket.cc.o -c /mnt/d/github/mymuduo/Socket.cc",
+  "file": "/mnt/d/github/mymuduo/Socket.cc"
 },
 {
   "directory": "/mnt/d/github/mymuduo/build",

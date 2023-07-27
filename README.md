@@ -71,5 +71,49 @@ int tid = static_cast<pid_t>(syscall(SYS_gettid));
 >
 > （2）在设置了EFD_SEMAPHORE的情况下，write函数相当于是向计数器中进行“添加”，比如说计数器中的值原本是2，如果write了一个3，那么计数器中的值就变成了5。如果某一次write后，计数器中的值超过了0xfffffffffffffffe（64位最大值-1），那么write就会阻塞直到另一个进程/线程从eventfd中进行了read（如果write没有设置EFD_NONBLOCK），或者返回EAGAIN错误（如果write设置了EFD_NONBLOCK）。
 
+**设置地址重用**
+
+```c++
+int optval = on ? 1 : 0;
+::setsockopt(sockfd_ , SOL_SOCKET, SO_REUSEPORT,
+                &optval , static_cast<socklen_t>(sizeof optval));
+```
+
+一般来说，一个端口释放后会等待两分钟之后才能再被使用，SO_REUSEADDR是让端口释放后立即就可以被再次使用
+
+`SO_REUSEADDR`用于对TCP套接字处于TIME_WAIT状态下的socket，才可以重复绑定使用
+
+> TCP，先调用close()的一方会进入TIME_WAIT状态
+
+SO_REUSEADDR 提供如下四个功能：
+
+- 允许启动一个监听服务器并捆绑其众所周知端口，即使以前建立的将此端口用做他们的本地端口的连接仍存在。这通常是重启监听服务器时出现，若不设置此选项，则bind时将出错
+- 允许在同一端口上启动同一服务器的多个实例，只要每个实例捆绑一个不同的本地IP地址即可。对于TCP，我们根本不可能启动捆绑相同IP地址和相同端口号的多个服务器。
+- 允许单个进程捆绑同一端口到多个套接口上，只要每个捆绑指定不同的本地IP地址即可。这一般不用于TCP服务器。
+- SO_REUSEADDR允许完全重复的捆绑：
+  当一个IP地址和端口绑定到某个套接口上时，还允许此IP地址和端口捆绑到另一个套接口上。一般来说，这个特性仅在支持多播的系统上才有，而且只对UDP套接口而言（TCP不支持多播）。
+
+**端口重用**
+
+```c++
+    int optval = on ? 1 : 0;
+    ::setsockopt(sockfd_ , SOL_SOCKET, SO_REUSEPORT,
+                &optval , static_cast<socklen_t>(sizeof optval));
+```
+
+> 那么什么是端口复用呢，如何理解呢，可以解释成如下： 
+> 在A机上进行客户端网络编程，假如它所使用的本地端口号是1234，如果没有开启端口复用的话，它用本地端口1234去连接B机再用本地端口连接C机时就不可以，若开启端口复用的话在用本地端口1234访问B机的情况下还可以用本地端口1234访问C机。若是服务器程序中监听的端口，即使开启了复用，也不可以用该端口望外发起连接了。
+
+有如下语义：
+
+此选项允许完全重复捆绑，但仅在想捆绑相同IP地址和端口的套接口都指定了此套接口选项才行。
+
+如果被捆绑的IP地址是一个多播地址，则SO_REUSEADDR和SO_REUSEPORT等效。
+
+使用这两个套接口选项的建议：
+
+- 在所有TCP服务器中，在调用bind之前设置SO_REUSEADDR套接口选项；
+- 当编写一个同一时刻在同一主机上可运行多次的多播应用程序时，设置SO_REUSEADDR选项，并将本组的多播地址作为本地IP地址捆绑
+
 
 

@@ -58,7 +58,9 @@
 				8,
 				9,
 				10,
-				11
+				11,
+				12,
+				13
 			]
 		}
 	],
@@ -98,7 +100,9 @@
 				8,
 				9,
 				10,
-				11
+				11,
+				12,
+				13
 			]
 		}
 	],
@@ -149,6 +153,12 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
+			"path" : "InetAddress.cc",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
 			"path" : "Logger.cc",
 			"sourceGroupIndex" : 0
 		},
@@ -156,6 +166,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "Poller.cc",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "Socket.cc",
 			"sourceGroupIndex" : 0
 		},
 		{
