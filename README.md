@@ -115,5 +115,11 @@ SO_REUSEADDR 提供如下四个功能：
 - 在所有TCP服务器中，在调用bind之前设置SO_REUSEADDR套接口选项；
 - 当编写一个同一时刻在同一主机上可运行多次的多播应用程序时，设置SO_REUSEADDR选项，并将本组的多播地址作为本地IP地址捆绑
 
+**创建非阻塞socket**
 
+```c++
+int sockfd = socket(AF_INET,SOCK_STREAM | SOCK_NONBLOCK | SOCK_CLOEXEC , 0);
+```
+
+在linux内核2.6.27以后type参数有个第二种功能，除了指定套接字类型以外它还提供了```SOCK_NONBLOCK  SOCK_CLOEXEC```的比特位的或运算，以修改socket()的行为，```SOCK_NONBLOCK  ```设置该套接字为非阻塞文件```SOCK_CLOEXEC```设置在子进程中不继承该文件描述符
 
