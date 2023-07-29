@@ -24,10 +24,9 @@ Acceptor::Acceptor(EventLoop* loop , const InetAddress & listenAddr , bool reuse
     , listenning_(false)
 {
     acceptSocket_.setReuseAddr(true);
-    acceptSocket_.setReusePort(true);
+    acceptSocket_.setReusePort(reuseport);
     acceptSocket_.bindAddress(listenAddr);
-    acceptChannel_.setReadCallback(std::bind(&Accept::handleRead,this));
-
+    acceptChannel_.setReadCallback(std::bind(&Acceptor::handleRead,this));
 }
 
 Acceptor::~Acceptor()
@@ -60,10 +59,10 @@ void Acceptor::handleRead()
     }
     else
     {
-        LOG_ERROR("%s:%s:%d accept error:%d \n",__FILE,__FUNCTION__,__LINE__,errno);
+        LOG_ERROR("%s:%s:%d accept error:%d \n", __FILE__ , __FUNCTION__ , __LINE__ , errno);
         if(errno == EMFILE)
         {
-            LOG_ERROR("%s:%s:%d sockfd reacked limit \n",__FILE,__FUNCTION__,__LINE__);
+            LOG_ERROR("%s:%s:%d sockfd reacked limit \n",__FILE__ , __FUNCTION__ , __LINE__);
         }
     }
 }

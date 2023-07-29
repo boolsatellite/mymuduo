@@ -1,6 +1,16 @@
 [
 {
   "directory": "/mnt/d/github/mymuduo/build",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Acceptor.cc.o -c /mnt/d/github/mymuduo/Acceptor.cc",
+  "file": "/mnt/d/github/mymuduo/Acceptor.cc"
+},
+{
+  "directory": "/mnt/d/github/mymuduo/build",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Buffer.cc.o -c /mnt/d/github/mymuduo/Buffer.cc",
+  "file": "/mnt/d/github/mymuduo/Buffer.cc"
+},
+{
+  "directory": "/mnt/d/github/mymuduo/build",
   "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Channel.cc.o -c /mnt/d/github/mymuduo/Channel.cc",
   "file": "/mnt/d/github/mymuduo/Channel.cc"
 },
@@ -58,6 +68,11 @@
   "directory": "/mnt/d/github/mymuduo/build",
   "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/TcpServer.cc.o -c /mnt/d/github/mymuduo/TcpServer.cc",
   "file": "/mnt/d/github/mymuduo/TcpServer.cc"
+},
+{
+  "directory": "/mnt/d/github/mymuduo/build",
+  "command": "/usr/bin/g++ -Dmymuduo_EXPORTS   -g -std=c++11 -fPIC -g -fPIC -o CMakeFiles/mymuduo.dir/Tcpconntion.cc.o -c /mnt/d/github/mymuduo/Tcpconntion.cc",
+  "file": "/mnt/d/github/mymuduo/Tcpconntion.cc"
 },
 {
   "directory": "/mnt/d/github/mymuduo/build",

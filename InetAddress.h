@@ -10,7 +10,7 @@
 class InetAddress
 {
 public:
-    explicit InetAddress(int port , std::string ip = "127.0.0.1");
+    explicit InetAddress(int port = 0 , std::string ip = "127.0.0.1");
     explicit InetAddress(const sockaddr_in& addr)
         :addr_(addr) {}
     
