@@ -195,13 +195,13 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "TcpServer.cc",
+			"path" : "TcpConnection.cc",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "Tcpconntion.cc",
+			"path" : "TcpServer.cc",
 			"sourceGroupIndex" : 0
 		},
 		{

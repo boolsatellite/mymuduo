@@ -251,10 +251,24 @@ CMakeFiles/mymuduo.dir/Socket.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mymuduo.dir/Socket.cc.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/d/github/mymuduo/Socket.cc -o CMakeFiles/mymuduo.dir/Socket.cc.s
 
+CMakeFiles/mymuduo.dir/TcpConnection.cc.o: CMakeFiles/mymuduo.dir/flags.make
+CMakeFiles/mymuduo.dir/TcpConnection.cc.o: ../TcpConnection.cc
+CMakeFiles/mymuduo.dir/TcpConnection.cc.o: CMakeFiles/mymuduo.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/d/github/mymuduo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/mymuduo.dir/TcpConnection.cc.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mymuduo.dir/TcpConnection.cc.o -MF CMakeFiles/mymuduo.dir/TcpConnection.cc.o.d -o CMakeFiles/mymuduo.dir/TcpConnection.cc.o -c /mnt/d/github/mymuduo/TcpConnection.cc
+
+CMakeFiles/mymuduo.dir/TcpConnection.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mymuduo.dir/TcpConnection.cc.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/d/github/mymuduo/TcpConnection.cc > CMakeFiles/mymuduo.dir/TcpConnection.cc.i
+
+CMakeFiles/mymuduo.dir/TcpConnection.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mymuduo.dir/TcpConnection.cc.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/d/github/mymuduo/TcpConnection.cc -o CMakeFiles/mymuduo.dir/TcpConnection.cc.s
+
 CMakeFiles/mymuduo.dir/TcpServer.cc.o: CMakeFiles/mymuduo.dir/flags.make
 CMakeFiles/mymuduo.dir/TcpServer.cc.o: ../TcpServer.cc
 CMakeFiles/mymuduo.dir/TcpServer.cc.o: CMakeFiles/mymuduo.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/d/github/mymuduo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/mymuduo.dir/TcpServer.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/d/github/mymuduo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/mymuduo.dir/TcpServer.cc.o"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mymuduo.dir/TcpServer.cc.o -MF CMakeFiles/mymuduo.dir/TcpServer.cc.o.d -o CMakeFiles/mymuduo.dir/TcpServer.cc.o -c /mnt/d/github/mymuduo/TcpServer.cc
 
 CMakeFiles/mymuduo.dir/TcpServer.cc.i: cmake_force
@@ -264,20 +278,6 @@ CMakeFiles/mymuduo.dir/TcpServer.cc.i: cmake_force
 CMakeFiles/mymuduo.dir/TcpServer.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mymuduo.dir/TcpServer.cc.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/d/github/mymuduo/TcpServer.cc -o CMakeFiles/mymuduo.dir/TcpServer.cc.s
-
-CMakeFiles/mymuduo.dir/Tcpconntion.cc.o: CMakeFiles/mymuduo.dir/flags.make
-CMakeFiles/mymuduo.dir/Tcpconntion.cc.o: ../Tcpconntion.cc
-CMakeFiles/mymuduo.dir/Tcpconntion.cc.o: CMakeFiles/mymuduo.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/d/github/mymuduo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/mymuduo.dir/Tcpconntion.cc.o"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mymuduo.dir/Tcpconntion.cc.o -MF CMakeFiles/mymuduo.dir/Tcpconntion.cc.o.d -o CMakeFiles/mymuduo.dir/Tcpconntion.cc.o -c /mnt/d/github/mymuduo/Tcpconntion.cc
-
-CMakeFiles/mymuduo.dir/Tcpconntion.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/mymuduo.dir/Tcpconntion.cc.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/d/github/mymuduo/Tcpconntion.cc > CMakeFiles/mymuduo.dir/Tcpconntion.cc.i
-
-CMakeFiles/mymuduo.dir/Tcpconntion.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/mymuduo.dir/Tcpconntion.cc.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/d/github/mymuduo/Tcpconntion.cc -o CMakeFiles/mymuduo.dir/Tcpconntion.cc.s
 
 CMakeFiles/mymuduo.dir/Thread.cc.o: CMakeFiles/mymuduo.dir/flags.make
 CMakeFiles/mymuduo.dir/Thread.cc.o: ../Thread.cc
@@ -322,8 +322,8 @@ mymuduo_OBJECTS = \
 "CMakeFiles/mymuduo.dir/Logger.cc.o" \
 "CMakeFiles/mymuduo.dir/Poller.cc.o" \
 "CMakeFiles/mymuduo.dir/Socket.cc.o" \
+"CMakeFiles/mymuduo.dir/TcpConnection.cc.o" \
 "CMakeFiles/mymuduo.dir/TcpServer.cc.o" \
-"CMakeFiles/mymuduo.dir/Tcpconntion.cc.o" \
 "CMakeFiles/mymuduo.dir/Thread.cc.o" \
 "CMakeFiles/mymuduo.dir/TimeStamp.cc.o"
 
@@ -343,8 +343,8 @@ mymuduo_EXTERNAL_OBJECTS =
 ../lib/libmymuduo.so: CMakeFiles/mymuduo.dir/Logger.cc.o
 ../lib/libmymuduo.so: CMakeFiles/mymuduo.dir/Poller.cc.o
 ../lib/libmymuduo.so: CMakeFiles/mymuduo.dir/Socket.cc.o
+../lib/libmymuduo.so: CMakeFiles/mymuduo.dir/TcpConnection.cc.o
 ../lib/libmymuduo.so: CMakeFiles/mymuduo.dir/TcpServer.cc.o
-../lib/libmymuduo.so: CMakeFiles/mymuduo.dir/Tcpconntion.cc.o
 ../lib/libmymuduo.so: CMakeFiles/mymuduo.dir/Thread.cc.o
 ../lib/libmymuduo.so: CMakeFiles/mymuduo.dir/TimeStamp.cc.o
 ../lib/libmymuduo.so: CMakeFiles/mymuduo.dir/build.make

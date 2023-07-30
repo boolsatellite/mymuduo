@@ -21,8 +21,8 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/mnt/d/github/mymuduo/Logger.cc" "CMakeFiles/mymuduo.dir/Logger.cc.o" "gcc" "CMakeFiles/mymuduo.dir/Logger.cc.o.d"
   "/mnt/d/github/mymuduo/Poller.cc" "CMakeFiles/mymuduo.dir/Poller.cc.o" "gcc" "CMakeFiles/mymuduo.dir/Poller.cc.o.d"
   "/mnt/d/github/mymuduo/Socket.cc" "CMakeFiles/mymuduo.dir/Socket.cc.o" "gcc" "CMakeFiles/mymuduo.dir/Socket.cc.o.d"
+  "/mnt/d/github/mymuduo/TcpConnection.cc" "CMakeFiles/mymuduo.dir/TcpConnection.cc.o" "gcc" "CMakeFiles/mymuduo.dir/TcpConnection.cc.o.d"
   "/mnt/d/github/mymuduo/TcpServer.cc" "CMakeFiles/mymuduo.dir/TcpServer.cc.o" "gcc" "CMakeFiles/mymuduo.dir/TcpServer.cc.o.d"
-  "/mnt/d/github/mymuduo/Tcpconntion.cc" "CMakeFiles/mymuduo.dir/Tcpconntion.cc.o" "gcc" "CMakeFiles/mymuduo.dir/Tcpconntion.cc.o.d"
   "/mnt/d/github/mymuduo/Thread.cc" "CMakeFiles/mymuduo.dir/Thread.cc.o" "gcc" "CMakeFiles/mymuduo.dir/Thread.cc.o.d"
   "/mnt/d/github/mymuduo/TimeStamp.cc" "CMakeFiles/mymuduo.dir/TimeStamp.cc.o" "gcc" "CMakeFiles/mymuduo.dir/TimeStamp.cc.o.d"
   )

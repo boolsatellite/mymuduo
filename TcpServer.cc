@@ -34,7 +34,7 @@ void TcpServer::newConnection(int sockfd , const InetAddress& peerAddr)
     snprintf(buf,sizeof buf , "-%s:#%d",ipPort_.c_str(),nextConnId_);
     ++nextConnId_;
     std::string connName = name_ + buf;
-    LOG_INFO("TcpServer::newConnection[%s] - new connection [%s] from %s \n",name_,connName,peerAddr.toIpPort());
+    LOG_INFO("TcpServer::newConnection[%s] - new connection [%s] from %s \n",name_.c_str(),connName.c_str(),peerAddr.toIpPort().c_str());
 
 }
 

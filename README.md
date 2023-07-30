@@ -71,6 +71,17 @@ int tid = static_cast<pid_t>(syscall(SYS_gettid));
 >
 > （2）在设置了EFD_SEMAPHORE的情况下，write函数相当于是向计数器中进行“添加”，比如说计数器中的值原本是2，如果write了一个3，那么计数器中的值就变成了5。如果某一次write后，计数器中的值超过了0xfffffffffffffffe（64位最大值-1），那么write就会阻塞直到另一个进程/线程从eventfd中进行了read（如果write没有设置EFD_NONBLOCK），或者返回EAGAIN错误（如果write设置了EFD_NONBLOCK）。
 
+**std::copy**
+
+```c++
+template< class InputIt, class OutputIt >
+OutputIt copy( InputIt first, InputIt last, OutputIt d_first );
+```
+
+作用：复制 `[first, last)` 所定义的范围中的元素到始于 `d_first` 的另一范围。
+
+返回：指向目标范围中最后复制元素的下个元素的输出迭代器。
+
 **设置地址重用**
 
 ```c++
@@ -122,4 +133,42 @@ int sockfd = socket(AF_INET,SOCK_STREAM | SOCK_NONBLOCK | SOCK_CLOEXEC , 0);
 ```
 
 在linux内核2.6.27以后type参数有个第二种功能，除了指定套接字类型以外它还提供了```SOCK_NONBLOCK  SOCK_CLOEXEC```的比特位的或运算，以修改socket()的行为，```SOCK_NONBLOCK  ```设置该套接字为非阻塞文件```SOCK_CLOEXEC```设置在子进程中不继承该文件描述符
+
+**粘包问题**
+
+TCP粘包、拆包属于网络底层问题，在数据链路层、网络层、传输层都有可能出现。日常的网络应用开发大多数在传输层出现，而UDP是由消息保护边界的，不会发生粘包、拆包问题，只发生在TCP协议中。假设客户端向服务端发送了两个连续的数据包Packet1、Packet2；
+
+在这个过程中可能会出现3种情况：
+
+- 正常：两个数据包逐一分开发送
+- 粘包：两个包一同发送，
+- 拆包：Server接收到不完整的或多出一部分的数据包
+
+![](.\Snipaste_2023-07-30_12-52-37.png)
+
+TCP本身是面向流的，作为网络服务器，如何从这源源不断涌来的数据流中拆分出或者合并出有意义的信息呢？通常会有以下一些常用的方法：
+
+1. 发送端给每个数据包添加包首部，首部中应该至少包含数据包的长度，这样接收端在接收到数据后，通过读取包首部的长度字段，便知道每一个数据包的实际长度了。
+2. 发送端将每个数据包封装为固定长度（不够的可以通过补0填充），这样接收端每次从接收缓冲区中读取固定长度的数据就自然而然的把每个数据包拆分开来。
+3. 可以在数据包之间设置边界，如添加特殊符号，这样，接收端通过这个边界就可以将不同的数据包拆分开。
+
+**const类成员函数注意点**
+
+```c++
+   class A{
+	char *begin()
+    {
+        return &*buffer_.begin();
+    }
+
+    const char* begin() const   //const 成员函数只能返回指向成员的const指针或引用。
+    {
+        return &(*buffer_.begin());
+    }
+	};
+```
+
+begin存在const重载，但是对于const重载的函数返回值必须是const类型，这是为了防止内部内部成员变量被修改，当返回内部成员变量的指针或引用时必须返回const类型，其他情况则任意(按值传递)
+
+
 
