@@ -18,6 +18,7 @@ Channel::Channel(EventLoop* loop , int fd)
 
 Channel::~Channel() {}
 
+//tie在TcpConnection新连接创建时被调用
 void Channel::tie(const std::shared_ptr<void>& obj)
 {
     tie_ = obj;

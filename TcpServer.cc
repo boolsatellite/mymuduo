@@ -1,9 +1,12 @@
 #include "TcpServer.h"
 #include "Logger.h"
+#include "TcpConnection.h"
 #include <functional>
+#include <strings.h>
 
 
-EventLoop* CheckLoopNotNull(EventLoop* loop)
+
+static EventLoop* CheckLoopNotNull(EventLoop* loop)
 {
     if(loop == nullptr)
     {
@@ -61,3 +64,48 @@ void TcpServer::start()
         loop_->runInLoop(std::bind(&Acceptor::listen,acceptor_.get()));
     }
 }
+
+void TcpServer::newConnection(int sockfd , const InetAddress& peerAddr)
+{
+    //轮询算法选择一个subLoop，用于管理对应的channel
+    EventLoop* ioLoop = threadPool_->getNextLoop();
+    char buf[64] = {0};
+    ::snprintf(buf , sizeof buf , "-%s$%d",ipPort_.c_str() , nextConnId_);
+    ++nextConnId_;
+    std::string connName = name_ + buf;
+    LOG_INFO("TcpServer::newConnection[%s]-new connection [%] from %s \n",
+                name_.c_str() , connName.c_str() , peerAddr.toIp().c_str());
+    
+    //通过sockfd获取其绑定的本机ip地址和端口信息
+    sockaddr_in local;
+    ::bzero(&local , sizeof local);
+    socklen_t addrlen = sizeof local;
+    if(::getsockname(sockfd , (struct sockaddr*)&local , &addrlen) < 0)
+    {
+        LOG_ERROR("sockets::getLocalAddr");  
+    }
+    InetAddress localAddr(local);
+    //根据连接成功的sockfd，创建TcpConnection连接对象
+    TcpConnectionPtr conn(new TcpConnection(
+            ioLoop,
+            connName,
+            sockfd,
+            localAddr,
+            peerAddr)
+            );
+    //TcpConnectionPtr conn = std::make_shared<TcpConnection>(ioLoop , connName , sockfd , localAddr , peerAddr);
+    connections_[connName] = conn;
+    //下面的回到都是用户设置给TcpServer => TcpConnection => Channel => Poller notify channel
+    conn->setConnectionCallback(connectionCallback_);
+    conn->setMessageCallback(messageCallback_);
+    conn->setWriteCompleteCallback(writeCompleteCallback_);
+
+    conn->setConnectionCallback(
+        std::bind(&TcpServer::removeConnection , this , std::placeholders::_1)
+    );
+    ioLoop->runInLoop(std::bind())
+}
+
+
+
+

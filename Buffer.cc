@@ -1,5 +1,6 @@
 #include "Buffer.h"
 #include "errno.h"
+#include <unistd.h>
 #include <sys/uio.h>
 /*
 从fd上读取数据，Poller工作在LT模式下
@@ -31,6 +32,16 @@ ssize_t Buffer::readFd(int fd , int* saveErrno)
     {
         writerIndex_ = buffer_.size();
         append(extrabuf,n - writable);
+    }
+    return n;
+}
+
+ssize_t Buffer::writeFd(int fd , int* saveErrno)
+{
+    int n = ::write(fd,peek(),readableBytes());
+    if(n <= 0)
+    {
+        *saveErrno = errno;
     }
     return n;
 }

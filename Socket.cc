@@ -28,8 +28,8 @@ void Socket::listen()
     {
         LOG_FATAL("listen sockfd : %d fail \n",sockfd_);
     }
-
 }
+
 int Socket::accept(InetAddress *peeraddr)
 {
     struct sockaddr_in addr;

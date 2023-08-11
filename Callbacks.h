@@ -5,11 +5,11 @@
 
 
 class Buffer;
-class Tcpconnection;
+class TcpConnection;
 class TimeStamp;
 
 
-using TcpConnectionPtr = std::shared_ptr<Tcpconnection>;
+using TcpConnectionPtr = std::shared_ptr<TcpConnection>;
 
 using ConnectionCallback = std::function<void (const TcpConnectionPtr&)>;
 

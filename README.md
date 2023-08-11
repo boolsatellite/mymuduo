@@ -126,6 +126,18 @@ SO_REUSEADDR 提供如下四个功能：
 - 在所有TCP服务器中，在调用bind之前设置SO_REUSEADDR套接口选项；
 - 当编写一个同一时刻在同一主机上可运行多次的多播应用程序时，设置SO_REUSEADDR选项，并将本组的多播地址作为本地IP地址捆绑
 
+**TCP保活**
+
+```c
+    int optval = on ? 1 : 0;
+    ::setsockopt(sockfd_ , SOL_SOCKET, SO_KEEPALIVE,
+                &optval , static_cast<socklen_t>(sizeof optval));
+```
+
+编写了一个服务端程序S和一个客户端程序C，客户端向服务端发送一个消息M：客户端发送消息服务端收到消息后一看，**瞧给你牛\*的**，然后没理客户端，傻狗客户端一直在等待，但是不知道是不是服务器挂掉了
+
+这时候TCP协议提出一个办法，**当客户端端等待超过一定时间后自动给服务端发送一个空的报文**，如果对方回复了这个报文证明连接还存活着，如果对方没有报文返回且进行了多次尝试都是一样，那么就认为连接已经丢失，客户端就没必要继续保持连接了。如果没有这种机制就会有很多空闲的连接占用着系统资源。
+
 **创建非阻塞socket**
 
 ```c++
@@ -170,5 +182,11 @@ TCP本身是面向流的，作为网络服务器，如何从这源源不断涌�
 
 begin存在const重载，但是对于const重载的函数返回值必须是const类型，这是为了防止内部内部成员变量被修改，当返回内部成员变量的指针或引用时必须返回const类型，其他情况则任意(按值传递)
 
+**std::enable_shared_from_this**
 
+```c++
+template< class T > class enable_shared_from_this;
+```
+
+若一个类 `T` 公有继承 `std::enable_shared_from_this<T>` ，则会为该类 `T` 提供成员函数： `shared_from_this` 。 当 `T` 类型对象 `t` 被一个为名为 `pt` 的 ```std::shared_ptr<T>``` 类对象管理时，调用 `T::shared_from_this` 成员函数，将会返回一个新的 ```std::shared_ptr<T>()``` 对象，它与 `pt` 共享 `t` 的所有权。`
 
