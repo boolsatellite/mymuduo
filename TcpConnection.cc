@@ -157,7 +157,7 @@ void TcpConnection::sendInLoop(const void* data, size_t len)
             if(remaining == 0 && writeCompleteCallback_)
             {
                 //既然在这里就将数据全部发送完成了，就不用给channel设置epollout事件了
-                loop_->queueInLoop(bind(&TcpConnection::writeCompleteCallback_,shared_from_this()));
+                loop_->queueInLoop(bind(writeCompleteCallback_,shared_from_this()));
             }
         }
         else //nwrote < 0
@@ -183,8 +183,8 @@ void TcpConnection::sendInLoop(const void* data, size_t len)
             oldlen < highWaterMark_ &&
             highWaterCallback_)
             {
-                loop_->queueInLoop(std::bind(&TcpConnection::highWaterCallback_
-                            , shared_from_this() , (size_t)(oldlen+remaining)));
+                loop_->queueInLoop(std::bind(TcpConnection::highWaterCallback_
+                            , shared_from_this() , oldlen+remaining));
             }
         outputBuffer_.append((char*)data + nwrote , remaining);
         if(!channel_->isWriting())

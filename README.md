@@ -190,3 +190,17 @@ template< class T > class enable_shared_from_this;
 
 若一个类 `T` 公有继承 `std::enable_shared_from_this<T>` ，则会为该类 `T` 提供成员函数： `shared_from_this` 。 当 `T` 类型对象 `t` 被一个为名为 `pt` 的 ```std::shared_ptr<T>``` 类对象管理时，调用 `T::shared_from_this` 成员函数，将会返回一个新的 ```std::shared_ptr<T>()``` 对象，它与 `pt` 共享 `t` 的所有权。`
 
+**getsockname**
+
+```c
+int getsockname(int socket, struct sockaddr *address,
+                socklen_t *address_len);
+```
+
+getsockname() 函数获取指定套接字的本地绑定名称，将该地址存储在地址参数指向的 sockaddr 结构中，并将该地址的长度存储在 address_len 参数指向的对象中。
+
+如果地址的实际长度大于提供的 sockaddr 结构的长度，存储的地址将被截断。
+
+如果套接字没有绑定到本地名称，则地址指向的对象中存储的值是未指定的。
+
+成功完成后，返回 0，address 参数指向套接字的地址，address_len 参数指向地址的长度。否则将返回-1，并设置 errno 表示错误。

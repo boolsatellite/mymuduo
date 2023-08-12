@@ -42,6 +42,7 @@ public:
     void setMessageCallback(const MessageCallback& cb) { messageCallback_ = cb; }
     void setWriteCompleteCallback(const WriteCompleteCallback& cb) {writeCompleteCallback_ = cb; }
     void setHighWaterMarkCallback(const HighWaterMarkCallback&cb) { highWaterCallback_ = cb; }
+    void setCloseCallback(const CloseCallback& cb) { closeCallback_ = cb; }
 
     void connectEstablished();   //连接建立了
     void connectDestroyed();     //连接销毁

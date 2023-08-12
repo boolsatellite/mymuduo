@@ -209,4 +209,6 @@ CMakeFiles/mymuduo.dir/TcpServer.cc.o: /mnt/d/github/mymuduo/TcpServer.cc \
  /usr/include/c++/11/bits/hashtable_policy.h \
  /usr/include/c++/11/bits/enable_special_members.h \
  /usr/include/c++/11/bits/unordered_map.h \
- /usr/include/c++/11/bits/erase_if.h /mnt/d/github/mymuduo/Logger.h
+ /usr/include/c++/11/bits/erase_if.h /mnt/d/github/mymuduo/Logger.h \
+ /mnt/d/github/mymuduo/TcpConnection.h /mnt/d/github/mymuduo/Buffer.h \
+ /usr/include/strings.h
