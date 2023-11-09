@@ -94,3 +94,36 @@ Base move constructor
 
 
 
+## Logger
+
+![](.\img\Logger.png)
+
+```c++
+#define myprintf(format, ...) fprintf (stderr, format, ##__VA_ARGS__)
+```
+
+`##__VA_ARGS__`如果可变参数被忽略或为空，## 操作将使预处理器（preprocessor）去除掉它前面的那个逗号. 如果你在宏调用时，确实提供了一些可变参数，GNU CPP 也会工作正常，它会把这些可变参数放到逗号的后面。`##__VA_ARGS__`使用
+
+
+
+```c
+time_t time(time_t * seconds);
+```
+
+回自纪元 Epoch（1970-01-01 00:00:00 UTC）起经过的时间，以秒为单位。如果 seconds 不为空，则返回值也存储在变量 seconds 中。
+
+## InerAddress
+
+![](.\img\InetAddress.png)
+
+const修饰函数返回值。
+  1、函数返回const指针，表示该指针不能被改动，只能把该指针赋给const修饰的同类型指针变量。
+  2、函数返回值为值传递，函数会把返回值赋给外部临时变量，用const无意义！不管是内部还是非内部数据类型。
+  3、函数采用引用方式返回的场合不多，只出现在类的赋值函数中，目的是为了实现链式表达。
+
+
+
+
+
+
+
