@@ -35,14 +35,14 @@ public:
     //判断感兴趣的事件
     bool isNoneEvent() const { return events_ == kNoneEvent; }
     bool isWriting() const { return events_ & kWriteEvent; }
-    bool isReading() const { return events_ & kReadEvent}
+    bool isReading() const { return events_ & kReadEvent; }
 
     //设置感兴趣的事件
     void enableReading() { events_ |= kReadEvent; update(); }
     void disableReading() { events_ &= ~kReadEvent; update();}
     void enableWriting() { events_ |= kWriteEvent; update(); }
     void disableWriting() { events_ &= ~kWriteEvent; update();}
-    void disableAll() { events_ = kNoneEvent; update()}
+    void disableAll() { events_ = kNoneEvent; update(); }
 
     EventLoop* ownEventLoop() { return loop_; }
 
