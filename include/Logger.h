@@ -10,6 +10,7 @@
 #include "nocopyable.h"
 #include "string"
 
+#define debugline __FILE__ , __FUNCTION__ ,__LINE__
 
 #define LOG_INFO(LogmsgFormat , ...) \
     do {\
