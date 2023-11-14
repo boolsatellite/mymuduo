@@ -27,10 +27,12 @@ public:
     void setWriteCallback(EventCallback cb) { writeCallback_ = std::move(cb); }
     void setCloseCallback(EventCallback cb) { closeCallback_ = std::move(cb); }
     void setErrorCallback(EventCallback cb) { errorCallback_ = std::move(cb); }
+    void set_index(int idx) { index_ = idx; }
 
     int fd() const { return fd_; }
+    int index() const { return index_; }
     int events() const { return events_; }
-    int set_revents(int rect) { revents_ = rect; }
+    void set_revents(int rect) { revents_ = rect; }
 
     //判断感兴趣的事件
     bool isNoneEvent() const { return events_ == kNoneEvent; }
@@ -63,7 +65,7 @@ private:
     const int fd_;
     int events_;                        //当前channel感兴趣的事件
     int revents_;                       //poller返回具体发生的事件
-    int index_;
+    int index_;                         //channel在poller中的状态
 
     std::weak_ptr<void> tie_;
     bool tied_;

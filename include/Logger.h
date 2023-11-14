@@ -36,7 +36,8 @@
         logger.setLoggerLevel(FATAL); \
         char buf[1024];              \
         snprintf(buf , 1024 , LogmsgFormat , ##__VA_ARGS__); \
-        logger.log(buf); \
+        logger.log(buf);              \
+        exit(-1);                 \
     }while(0);
 
 #ifdef MUDUO_DEBUG

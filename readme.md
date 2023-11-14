@@ -96,8 +96,6 @@ Base move constructor
 
 ## Logger
 
-![](.\img\Logger.png)
-
 ```c++
 #define myprintf(format, ...) fprintf (stderr, format, ##__VA_ARGS__)
 ```
@@ -114,16 +112,25 @@ time_t time(time_t * seconds);
 
 ## InerAddress
 
-![](.\img\InetAddress.png)
-
 const修饰函数返回值。
   1、函数返回const指针，表示该指针不能被改动，只能把该指针赋给const修饰的同类型指针变量。
   2、函数返回值为值传递，函数会把返回值赋给外部临时变量，用const无意义！不管是内部还是非内部数据类型。
   3、函数采用引用方式返回的场合不多，只出现在类的赋值函数中，目的是为了实现链式表达。
 
+## Channel
 
+listen fd，有新连接请求，\**对端发送普通数据\** 触发EPOLLIN。
+带外数据，只触发EPOLLPRI。
+对端正常关闭（程序里close()，shell下kill或ctr+c），触发EPOLLIN和EPOLLRDHUP，但是不触发EPOLLERR 和EPOLLHUP
+对端异常断开连接（只测了拔网线），没触发任何事件
 
+![](D:\github\mymuduo\img\Snipaste_2023-11-10_22-30-57.png)
 
+> tie() 是如何被触发的？
+
+## Poller
+
+muduo在Poller.h中声明了`static Poller* newDefaultPoller(EventLoop* loop);`但未在对应的cc文件中定义，而是单独在poller/DefaultPoller.cc中定义，newDefaultPoller函数是用来返回一个EPollPoller或PollPoller的指针，而Poller属于基类，实现该函数必然要使用头文件EPollPoller，然而在基类中包含派生类的做法是不好的，故在新文件中定义
 
 
 
