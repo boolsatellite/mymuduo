@@ -4,6 +4,8 @@
 
 #include <sys/epoll.h>
 #include <cassert>
+#include <sstream>
+#include <iostream>
 #include "Channel.h"
 #include "EventLoop.h"
 #include "Logger.h"
@@ -29,11 +31,11 @@ void Channel::tie(const std::shared_ptr<void> &obj) {   //tie观察传入的shar
 }
 
 void Channel::update() {
-    //loop_->updateChannel(this);   todo
+    loop_->updateChannel(this);
 }
 
 void Channel::remove() {
-    //loop_->removeChannel(this);   todo
+    loop_->removeChannel(this);
 }
 
 void Channel::handleEvent(Timestamp receiveTime) {
@@ -72,5 +74,35 @@ void Channel::handleEventWithGuard(Timestamp receiveTime) {
         }
     }
 }
+
+
+std::string Channel::reventsToString() const {
+    return Channel::eventsToString(fd_, revents_);
+}
+
+std::string Channel::eventsToString() const {
+    return Channel::eventsToString(fd_, events_);
+}
+
+
+std::string Channel::eventsToString(int fd, int ev) const {
+    std::ostringstream oss;
+    oss << fd << ": ";
+    if (ev & EPOLLIN)
+        oss << "IN ";
+    if (ev & EPOLLPRI)
+        oss << "PRI ";
+    if (ev & EPOLLOUT)
+        oss << "OUT ";
+    if (ev & EPOLLHUP)
+        oss << "HUP ";
+    if (ev & EPOLLRDHUP)
+        oss << "RDHUP ";
+    if (ev & EPOLLERR)
+        oss << "ERR ";
+
+    return oss.str();
+}
+
 
 //tie() 是怎样被触发的？

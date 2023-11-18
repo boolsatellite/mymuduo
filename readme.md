@@ -132,5 +132,85 @@ listen fd，有新连接请求，\**对端发送普通数据\** 触发EPOLLIN。
 
 muduo在Poller.h中声明了`static Poller* newDefaultPoller(EventLoop* loop);`但未在对应的cc文件中定义，而是单独在poller/DefaultPoller.cc中定义，newDefaultPoller函数是用来返回一个EPollPoller或PollPoller的指针，而Poller属于基类，实现该函数必然要使用头文件EPollPoller，然而在基类中包含派生类的做法是不好的，故在新文件中定义
 
+## CuurentThread
+
+``` c
+int nanosleep(const struct timespec *rqtp, struct timespec *rmtp);
+```
+
+`nanosleep()`函数会导致当前的线程将暂停执行,直到`rqtp`参数所指定的时间间隔。或者在指定时间间隔内有信号传递到当前线程，将引起当前线程调用信号捕获函数或终止该线程。
 
 
+
+`__builtin_expect((x),0)`表示 x 的值为假的可能性更大。
+编译器在编译过程中，会将可能性更大的代码紧跟着起面的代码，从而减少指令跳转带来的性能上的下降。
+
+
+
+在多线程中，`pthread_self()`函数获得的线程号是`pthread`库对线程的编号，而不是Linux系统对线程的编号。`pthread_create()`返回的线程号，使用top命令是查不到的，top显示的是Linux的线程号。
+与`getpid()`函数不同的是，Linux并没有直接给一个`gettid()`的API，而是使用syscall()直接用`SYS_gettid`的系统调用号去获取线程号。
+
+```c
+__thread int t_cachedTid = static_cast<pid_t>(syscall(SYS_gettid));
+```
+
+## EventLoop
+
+可以使用std::ostringstream类用于处理字符串
+
+```c++
+std::string Channel::eventsToString(int fd, int ev) const {
+    std::ostringstream oss;
+    oss << fd << ": ";
+    if (ev & EPOLLIN)         oss << "IN ";
+    if (ev & EPOLLPRI)        oss << "PRI ";
+    if (ev & EPOLLOUT)        oss << "OUT ";
+    if (ev & EPOLLHUP)        oss << "HUP ";
+    if (ev & EPOLLRDHUP)      oss << "RDHUP ";
+    if (ev & EPOLLERR)        oss << "ERR ";
+    return oss.str();
+}
+```
+
+
+
+eventfd 是 Linux 的一个系统调用，创建一个文件描述符用于事件通知
+
+```c
+#include <sys/eventfd.h>
+int eventfd(unsigned int initval, int flags);
+//eventfd()调用返回一个新的fd，指向新创建的这个eventfd对象。
+//eventfd对象包含一个uint64_t的计数器，由内核保存，初始化eventfd时可以由initval参数来初始化这个计数器的值。
+//flags参数可以由下面几个选项按位与组合得到，决定eventfd的行为：
+//EFD_CLOEXEC（linux 2.6.27及以后） 将此fd设置为 close-on-exec （调用exec时自动关闭fd）
+//EFD_NONBLOCK（linux 2.6.27及以后）将fd设置为非阻塞
+//EFD_SEMAPHORE（linux 2.6.30及以后）从eventfd读出类似信号量的数据，见下面关于 read 的描述
+```
+
+相关IO方法:
+
+read成功后返回8字节整形的长度（即返回8）。读取时，如果提供的buffer小于8个字节，返回-1，则errno设置为 EINVAL 错误。
+
+read的结果根据`eventfd`的`counter`是否为0，以及创建`eventfd`对象时flag参数是否设置了`EFD_SEMAPHORE`，有所不同。
+
+- 如果未设置`EFD_SEMAPHORE`且counter的值非0，则read返回一个8字节整形，值是counter的值，并且将counter的值设置为0
+- 如果设置了`EFD_SEMAPHORE`且`counter`的值非0，则read返回一个8字节整形，值是1，并且将`counter`的值减一
+- 如果`counter`的值是0，则根据`flag`是否设置了`nonblocking`，让进程进入阻塞状态或者返回`EAGAIN`的`errno`
+
+write方法可以将`buffer`中的8字节整形数据加到`eventfd`的`counter`上。`counter`上存储的最大值是 `unint64-1`，即`0xfffffffffffffffe`。如果相加时超限了，则根据`flag`是否设置为非阻塞，`wirte`会导致阻塞或者返回 `EAGAIN` 的 errno。
+
+如果提供给`write`调用的`buffe`r小于8字节，或者尝试写入`0xffffffffffffffff`，write会返回 EINVAL 错误。
+
+eventfd支持`poll`、`select`、`epoll`等类似操作。
+
+- 当`counter`的值大于0时，`eventfd`是可读的
+- 当`counter`小于`0xffffffffffffffff`，即至少可以写入一个1而不阻塞时，`eventfd`是可写的
+- 当counter溢出时，`selec`t认为`eventfd`即是可写的又是可读的，`poll`则会返回 `POLLERR` 错误。如上所述，`write`永远不会导致`counter`溢出。但是，如果` KAIO `子系统执行了` 2^64` 个` eventfd`信号发布”，则可能会发生溢出（理论上可能，但实际上不太可能）。 如果发生溢出，则 `read` 将返回该最大 `uint64_t` 值（即 `0xffffffffffffffff`）。
+
+
+
+
+
+
+
+https://www.zoucz.com/blog/2022/06/14/2c0ff480-ebd4-11ec-bbfb-55427a78e3a0/

@@ -61,6 +61,7 @@ void EPollPoller::removeChannel(Channel *channel) {
     assert(channels_.find(fd) != channels_.end());
     assert(channels_[fd] == channel);
     assert(channel->isNoneEvent());
+    LOG_INFO("%s %s %d : fd= %d events = %d index = %d",debugline , channel->fd() , channel->events() , channel->index());
     int index = channel->index();
     if(index == kAdded || index == kDeleted) {
         size_t n = channels_.erase(fd);

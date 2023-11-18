@@ -51,6 +51,10 @@ public:
     void tie(const std::shared_ptr<void>& );
     void remove();
 
+    std::string reventsToString() const;
+    std::string eventsToString() const;
+
+    std::string eventsToString(int fd, int ev) const ;
 
 private:
 
@@ -75,6 +79,7 @@ private:
     EventCallback  writeCallback_;
     EventCallback  closeCallback_;
     EventCallback  errorCallback_;
+
 };
 
 
