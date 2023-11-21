@@ -209,8 +209,20 @@ eventfd支持`poll`、`select`、`epoll`等类似操作。
 
 
 
+### Thread
+
+当类成员需要线程对象时，不可以直接使用线程对象，而是使用指向线程对象的指针，因为`std::thread`一旦创建线程就开启了
+
+
+
+>  对于成员变量numCreated_ 只看到自增却看不到自减?
+
+陈硕大神使用了自实现的互斥锁，条件变量，以及计数门杉
+
 
 
 
 
 https://www.zoucz.com/blog/2022/06/14/2c0ff480-ebd4-11ec-bbfb-55427a78e3a0/
+
+https://dlonng.com/posts/semaphore

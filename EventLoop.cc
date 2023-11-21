@@ -29,19 +29,19 @@ void EventLoop::printActiveChannels() const {
 }
 
 EventLoop::EventLoop()
-        : looping_(false), quit_(false), callingPendingFunctors_(false), threadId_(CurrentThread::tid()),
-          poller_(Poller::newDefaultPoller(this)), wakeupFd_(createEventfd())                    //创建eventfd
+        : looping_(false), quit_(false), callingPendingFunctors_(false), threadId_(CurrentThread::tid())
+        , poller_(Poller::newDefaultPoller(this)), wakeupFd_(createEventfd())                    //创建eventfd
         , wakeupChannel_(new Channel(this, wakeupFd_)) //将eventfd包装为Channel
         , currentActiveChannel_(nullptr) {
     LOG_INFO("%s %s %d : EventLoop created %p in thread %d ", debugline, this, threadId_);
-    if (t_loopInThisThread != nullptr) {
+    if (t_loopInThisThread != nullptr) {        //一个线程只允许有一个EventLoop
         LOG_FATAL("%s %s %d : Another EventLoop %p in this thread %d",debugline , t_loopInThisThread, threadId_);
     } else {
         t_loopInThisThread = this;
     }
     wakeupChannel_->setReadCallback(std::bind(&EventLoop::handleRead, this));   //为 eventfd包装成的channel设置读回调
-    wakeupChannel_->enableReading();                                            //使eventfd包装成的channel可读
-    //eventfd管理的counter大于0时是可读的
+    wakeupChannel_->enableReading();                                            //使eventfd包装成的channel可读.并加入epoll中
+    //对于epoll来说，eventfd管理的counter大于0时是可读的
 }
 
 void EventLoop::handleRead() {
