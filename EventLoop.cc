@@ -96,7 +96,7 @@ void EventLoop::doPendingFunctors() {
 }
 
 void EventLoop::quit() {
-    quit_ = true;
+    quit_ = true;               //使EventLoop::loop函数结束成为可能
     if (!isInLoopThread()) {     //在其他线程调用当前线程中EventLoop::quit()
         wakeup();               //唤醒
         // todo:可以尝试不唤醒，EPollPoller::poll()超时会自动返回，找到对应对应代码位置

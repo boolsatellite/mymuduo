@@ -219,6 +219,62 @@ eventfd支持`poll`、`select`、`epoll`等类似操作。
 
 陈硕大神使用了自实现的互斥锁，条件变量，以及计数门杉
 
+### EventLoopThread
+
+**one loop pre thread 代码体现**
+
+```c++
+void Thread::start() {
+    sem_t sem;
+    sem_init(&sem , false , 0);
+    thread_ = std::make_shared<std::thread>([&](){
+        tid_ = CurrentThread::tid();    //获取新开启线程的tid
+        sem_post(&sem);
+        func_();
+    });
+    //这里必须等待上面新创建的线程的tid值(用于标识线程成功创建)，采用信号量解决
+    sem_wait(&sem);
+    sem_destroy(&sem);
+}
+
+EventLoop *EventLoopThread::startLoop() {
+    assert(!thread_.started());
+    thread_.start();        //开启新线程执行 EventLoopThread::threadFunc
+    EventLoop* loop = nullptr;
+    {
+         std::unique_lock<std::mutex> lock(mutex_);
+         while(loop_ != nullptr) {
+             cond_.wait(lock);      //解锁等待notify
+         }
+         loop = loop_;
+    }
+    return loop;
+}
+
+void EventLoopThread::threadFunc() {    //在单独的新线程内运行
+    EventLoop loop;         //在新线程内创建一个EventLoop， one loop pre thread
+    if(callback_) {
+        callback_(&loop);   //调用线程初始化回调函数
+    }
+    {
+        std::unique_lock<std::mutex> lock(mutex_);
+        loop_ = &loop;
+        cond_.notify_one();
+    }
+    loop.loop();            //开启Poller
+
+    //当可以执行到这里，说明poller::poll() 结束了，事件循环结束了
+    std::unique_lock<std::mutex> lock(mutex_);
+    loop_ = nullptr;
+}
+```
+
+
+
+
+
+
+
 
 
 
