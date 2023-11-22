@@ -47,6 +47,13 @@ public:
         return threadId_ == CurrentThread::tid();
     }
 
+    void assertInLoopThread() {
+        if(!isInLoopThread()) {
+            LOG_FATAL("%s %s %d : EventLoop %p was created in threadId_ %d current thread id %d",
+                      debugline , this , threadId_ , CurrentThread::tid());
+        }
+    }
+
 private:
 
     //执行回调函数
@@ -74,12 +81,6 @@ private:
 
 
 
-    void assertInLoopThread() {
-        if(!isInLoopThread()) {
-            LOG_FATAL("%s %s %d : EventLoop %p was created in threadId_ %d current thread id %d",
-                      debugline , this , threadId_ , CurrentThread::tid());
-        }
-    }
 };
 
 #endif //MYMUDUO_EVENTLOOP_H
