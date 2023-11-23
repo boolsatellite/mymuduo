@@ -6,8 +6,11 @@
 #define MYMUDUO_SOCKET_H
 
 
+#include <bits/sockaddr.h>
+
 class InetAddress;
 struct tcp_info;
+
 
 class Socket {
 public:
