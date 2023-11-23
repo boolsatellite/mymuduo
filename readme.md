@@ -271,6 +271,83 @@ void EventLoopThread::threadFunc() {    //在单独的新线程内运行
 
 
 
+### EventLoopThreadPool
+
+```c++
+void EventLoopThreadPool::start(const ThreadInitCallback& cb)
+{
+  assert(!started_);
+  baseLoop_->assertInLoopThread();
+
+  started_ = true;
+
+  for (int i = 0; i < numThreads_; ++i)
+  {
+    char buf[name_.size() + 32];				//使用了变量开辟数组
+    snprintf(buf, sizeof buf, "%s%d", name_.c_str(), i);
+    EventLoopThread* t = new EventLoopThread(cb, buf);
+    threads_.push_back(std::unique_ptr<EventLoopThread>(t));
+    loops_.push_back(t->startLoop());
+  }
+  if (numThreads_ == 0 && cb)
+  {
+    cb(baseLoop_);
+  }
+}
+```
+
+C/C++语法规范中，不能使用变量定义数组维数，因为数组维数的确定，需要在编译阶段完成。要想在程序实行阶段确定数组维数，应该使用new/malloc去动态分配；但是试验了一下，由于g++对C99的支持，使得使用变量定义数组维数也是可行的(在Linux系统下)，但是如此方法，在VC下会报错，即这并不是符合C++语法规范的写法，在很大程度上会限制代码的平台兼容性，应该避免这种写法
+
+> ```c++
+> std::vector<EventLoop *> EventLoopThreadPool::getAllLoops()
+> ```
+>
+> 调用此函数，有没有可能导致 EventLoop的析构函数被重复调用
+
+### Socket
+
+TCP连接的TIME_WAIT状态，服务器程序可以通过设置`socket`选项`SO_REUSEADDR`来强制使用被处于` TIME_WAIT`状态的连接占用的`socket`地址
+
+```c++
+void Socket::setReuseAddr(bool on) const {
+    int optval = on ? 1 : 0;
+    ::setsockopt(sockfd_ , SOL_SOCKET , SO_REUSEADDR , &optval , sizeof optval);
+}
+```
+
+端口复用允许在一个应用程序可以把 n 个套接字绑在一个端口上而不出错。同时，这 n 个套接字发送信息都正常，没有问题。详细参考下方链接
+
+```c++
+void Socket::setReusePort(bool on) {
+  int optval = on ? 1 : 0;
+  int ret = ::setsockopt(sockfd_, SOL_SOCKET, SO_REUSEPORT,
+                         &optval, static_cast<socklen_t>(sizeof optval));
+  if (ret < 0 && on) {
+    LOG_SYSERR << "SO_REUSEPORT failed.";
+  }
+}
+```
+
+当一个 TCP 连接建立之后，开启 TCP keepalive 的一端会启动一个计时器，当这个计时器数值到达 0 之后（也就是经过 tcp_keepalive_time 时间后，当然每次传输数据都将重置计时器数值），会发送一个保活探测报文。探测报文不包含任何数据，或者包含一个无意义的字节
+
+```c++
+void Socket::setKeepAlive(bool on) {
+  int optval = on ? 1 : 0;
+  ::setsockopt(sockfd_, SOL_SOCKET, SO_KEEPALIVE,
+               &optval, static_cast<socklen_t>(sizeof optval));
+}
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -282,3 +359,7 @@ void EventLoopThread::threadFunc() {    //在单独的新线程内运行
 https://www.zoucz.com/blog/2022/06/14/2c0ff480-ebd4-11ec-bbfb-55427a78e3a0/
 
 https://dlonng.com/posts/semaphore
+
+https://cloud.tencent.com/developer/article/1963171   端口复用
+
+https://juejin.cn/post/7142654287493988359			tcp保活
