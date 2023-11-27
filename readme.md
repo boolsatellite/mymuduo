@@ -340,7 +340,60 @@ void Socket::setKeepAlive(bool on) {
 
 
 
+## Buffer
 
+```c
+/// +-------------------+------------------+------------------+
+/// | prependable bytes |  readable bytes  |  writable bytes  |
+/// |                   |     (CONTENT)    |                  |
+/// +-------------------+------------------+------------------+
+/// |                   |                  |                  |
+/// 0      <=      readerIndex   <=   writerIndex    <=     size
+```
+
+对于扩容函数：
+
+```c++
+
+  void makeSpace(size_t len) {
+    if (writableBytes() + prependableBytes() < len + kCheapPrepend) {
+      // FIXME: move readable data
+      buffer_.resize(writerIndex_+len);
+    }
+    else {
+      // move readable data to the front, make space inside buffer
+      assert(kCheapPrepend < readerIndex_);
+      size_t readable = readableBytes();
+      std::copy(begin()+readerIndex_,
+                begin()+writerIndex_,
+                begin()+kCheapPrepend);
+      readerIndex_ = kCheapPrepend;
+      writerIndex_ = readerIndex_ + readable;
+      assert(readable == readableBytes());
+    }
+  }
+```
+
+`prependableBytes()` 返回 `readerIndex_` 的值，此条件判断可以是：`buffer_.size() - writerIndex_ + readerIndex_ - kCheapPrepend`，即可写部分加上读缓冲中不被使用的部分，若这部分空间小于len就扩容，直接在写空间上扩容而不考虑利用读缓冲中废弃的部分，若这部分空间大于len，说明可以存放len字节，就将数据前移读缓冲中被废弃的字节数
+
+
+
+**readv writev**
+
+`struct iovec`定义了一个向量元素。通常，这个结构用作一个多元素的数组。对于每一个传输的元素，指针成员iov_base指向一个缓冲区，这个缓冲区是存放的是readv所接收的数据或是`writev`将要发送的数据。成员`iov_len`在各种情况下分别确定了接收的最大长度以及实际写入的长度。且`iovec`结构是用于`scatter/gather IO`的。`readv和writev`函数用于在一次函数调用中读、写多个非连续缓冲区。有时也将这两个函数称为散布读（scatter read）和聚集写（gather write）。
+
+```c
+#include <sys/uio.h>
+struct iovec {
+    ptr_t iov_base; /* Starting address */
+    size_t iov_len; /* Length in bytes */
+};
+
+ssize_t readv(int fd, const struct iovec *iov, int iovcnt);
+ssize_t writev(int fd, const struct iovec *iov, int iovcnt);
+```
+
+这些函数的返回值是`readv`所读取的字节数或是`writev`所写入的字节数。如果有错误发生，就会返回-1
 
 
 

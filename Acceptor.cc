@@ -52,7 +52,7 @@ Acceptor::~Acceptor() {
 void Acceptor::listen() {
     listenning_ = true;
     acceptSocket_.listen();
-    acceptChannel_.enableReading();
+    acceptChannel_.enableReading();     //epoll_ctl
 }
 
 
