@@ -4,6 +4,7 @@
 
 #include <cassert>
 #include "TcpServer.h"
+#include "TcpConnection.h"
 #include "EventLoopThreadPool.h"
 
 sockaddr_in getLocalAddr(int sockfd) {
@@ -28,8 +29,8 @@ TcpServer::TcpServer(EventLoop *loop, const InetAddress &listenAddr,
                         , nextConnId_(1)
 {
     //当有新连接时，调用TcpServer::newConnection
-    acceptor_->setNewConnectionCallback(std::bind(&TcpServer::newConnection , this
-                                                  , std::placeholders::_1 , std::placeholders::_2));
+    acceptor_->setNewConnectionCallback([this](auto && PH1, auto && PH2) {
+        newConnection(std::forward<decltype(PH1)>(PH1), std::forward<decltype(PH2)>(PH2)); });
 }
 
 void TcpServer::newConnection(int sockfd, const InetAddress &peerAddr) {
@@ -45,7 +46,18 @@ void TcpServer::newConnection(int sockfd, const InetAddress &peerAddr) {
 
     InetAddress localAddr(getLocalAddr(sockfd));
 
-    //todo  TcpConnection
+    TcpConnectionPtr conn(new TcpConnection(ioLoop ,
+                                            conName ,
+                                            sockfd ,
+                                            localAddr ,
+                                            peerAddr));
+    connections_[conName] = conn;
+    conn->setConnectionCallback(connectionCallback_);
+    conn->setMessageCallback(messageCallback_);
+    conn->setWriteCompleteCallback(writeCompleteCallback_);
+    conn->setCloseCallback(
+            [this](auto && PH1) { removeConnection(std::forward<decltype(PH1)>(PH1)); });
+    ioLoop->runInLoop([conn] { conn->connectEstablished(); });
 }
 
 void TcpServer::setThreadNum(int numThreads) {
@@ -59,6 +71,31 @@ void TcpServer::start() {
         assert(!acceptor_->listening());
         loop_->runInLoop(
                 std::bind(&Acceptor::listen , acceptor_.get()) );
+    }
+}
+
+void TcpServer::removeConnection(const TcpConnectionPtr &conn) {
+    loop_->runInLoop([this, conn] { removeConnectionInLoop(conn); });
+}
+
+void TcpServer::removeConnectionInLoop(const TcpConnectionPtr &conn) {
+    loop_->assertInLoopThread();
+    LOG_INFO("TcpServer::removeConnectionInLoop [%s] - connection %s"
+                ,name_.c_str() , conn->name().c_str());
+    size_t n = connections_.erase(conn->name());
+    assert(n == 1);
+    EventLoop* ioLoop = conn->getLoop();    //获取conn所在的loop
+    ioLoop->queueInLoop([conn] { conn->connectDestroyed(); });
+}
+
+TcpServer::~TcpServer() {
+    loop_->assertInLoopThread();
+    LOG_INFO(":~TcpServer() name %s ",name_.c_str());
+    for(auto& item : connections_) {
+        TcpConnectionPtr conn(item.second);
+        item.second.reset();
+        conn->getLoop()->runInLoop(
+                [conn] { conn->connectDestroyed(); } );
     }
 }
 

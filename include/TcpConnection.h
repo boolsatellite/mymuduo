@@ -102,3 +102,45 @@ private:
 
 
 #endif //MYMUDUO_TCPCONNECTION_H
+
+//    11      12       33      26        55       82
+//    |                                           |
+//    82      12       33      26        55       11
+//     |                                 |
+//    82      12       33      26        55       11
+//                      |                 |
+//    82      12       55      26        33       11
+//                      |       |
+//    82      12       26      55         33       11
+//                      |
+
+
+void parse(int* arr , int len) {
+    int l = 0;
+    int r = len -1;
+    while(l < r) {
+        if(arr[l] % 2 == 0) {
+            l++;
+        } else {
+            //swap
+            int t = arr[r];
+            arr[r] = arr[l];
+            arr[l] = t;
+
+            r--;
+        }
+    }
+}
+
+int main() {
+    int arr[] = {1,2, ,3,4,5,6,7};
+    parse(arr , sizeof arr / sizeof arr[0]);
+    for(auto i : arr) {
+        std::cout <<i << " ";
+
+    }
+
+}
+
+
+
