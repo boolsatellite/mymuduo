@@ -397,6 +397,14 @@ ssize_t writev(int fd, const struct iovec *iov, int iovcnt);
 
 
 
+### TcpConnection
+
+EPIPE / ECONNRESET
+
+"write error: EPIPE" 是一种常见的 UNIX/Linux 错误，通常在管道或套接字上写入数据时出现。它表示在写入数据时，读取数据的进程已经终止，因此写入操作失败。在代码中，可以通过捕获 `SIGPIPE` 信号并对其进行处理，以避免出现这种错误。
+
+
+
 
 
 

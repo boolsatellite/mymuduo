@@ -5,6 +5,8 @@
 #include <cassert>
 #include <sys/uio.h>
 #include <errno.h>
+#include <string>
+#include <sys/socket.h>
 #include "Buffer.h"
 
 Buffer::Buffer(size_t initialSize)

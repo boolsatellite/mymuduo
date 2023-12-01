@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <string>
+#include <cassert>
 
 
 /// @code
@@ -34,7 +35,7 @@ public:
     size_t prependableBytes() const
     { return readerIndex_; }
 
-    char *peek() {                  //返回可写位置的指针
+    char *peek() {
         return begin() + readerIndex_;
     }
 
@@ -56,7 +57,7 @@ public:
     }
 
     std::string retrieveAllAsString() {
-        retrieveAsString(readableBytes());
+        return retrieveAsString(readableBytes());
     }
 
 
@@ -107,6 +108,7 @@ public:
     }
 
     ssize_t readFd(int fd , int* savedErrno);       //从fd上读取数据
+
 
 private:
 
