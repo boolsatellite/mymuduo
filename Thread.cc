@@ -4,12 +4,11 @@
 
 #include "Thread.h"
 #include "CurrentThread.h"
-
 #include <utility>
 #include <semaphore.h>
 
 
-std::atomic_int numCreated_ {0};      //类静态成员，记录产生线程的个数
+std::atomic_int Thread::numCreated_ {0};      //类静态成员，记录产生线程的个数
 
 Thread::Thread(Thread::ThreadFunc func, std::string name = std::string())
         : started_(false)
@@ -49,7 +48,7 @@ void Thread::join() {
 }
 
 void Thread::setDefaultName() {
-    int num = ++numCreated_;
+    int num = ++this->numCreated_;
     if(name_.empty()) {
         char buf[32];
         snprintf(buf , sizeof buf , "Thread%d",num);

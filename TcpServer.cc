@@ -27,6 +27,7 @@ TcpServer::TcpServer(EventLoop *loop, const InetAddress &listenAddr,
                         , connectionCallback_(defaultConnectionCallback)
                         , messageCallback_(defaultMessageCallback)
                         , nextConnId_(1)
+                        , started_(0)
 {
     //当有新连接时，调用TcpServer::newConnection
     acceptor_->setNewConnectionCallback([this](auto && PH1, auto && PH2) {

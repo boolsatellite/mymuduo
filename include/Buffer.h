@@ -62,14 +62,14 @@ public:
 
 
     std::string retrieveAsString(size_t len) {
-        assert(len < readableBytes());
+        assert(len <= readableBytes());
         std::string result(peek() , len);
         retrieve(len);
         return result;
     }
 
     void retrieve(size_t len) {
-        assert(len <= readerIndex_) ;
+        assert(len <= readableBytes()) ;
         if(len < readableBytes()) {
             readerIndex_ += len;
         } else {

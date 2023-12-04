@@ -17,7 +17,7 @@
 // 为nullptr说明未当前线程没有分配EventLoop
 __thread EventLoop *t_loopInThisThread = nullptr;
 
-const int kPollTimeMs = 1000;   //epoll的默认超时时间
+const int kPollTimeMs = 10000;   //epoll的默认超时时间
 
 int createEventfd();
 

@@ -67,7 +67,8 @@ void Socket::listen() {
 
 int Socket::accept(InetAddress *peeraddr) {         //peeraddr传出参数，保存对端信息
     socklen_t addrlen = sizeof(peeraddr->getSockAddr());
-    int connfd = ::accept(sockfd_ , const_cast<sockaddr*>(peeraddr->getSockAddr()) , &addrlen);
+    int connfd = ::accept4(sockfd_ , const_cast<sockaddr*>(peeraddr->getSockAddr()) , &addrlen ,
+                           SOCK_NONBLOCK | SOCK_CLOEXEC);
     if (connfd < 0) {
         int savedErrno = errno;
         //LOG_SYSERR << "Socket::accept";

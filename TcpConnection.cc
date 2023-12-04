@@ -6,6 +6,7 @@
 
 #include <utility>
 #include <cassert>
+#include <unistd.h>
 #include "Socket.h"
 #include "Channel.h"
 #include "EventLoop.h"
@@ -82,7 +83,8 @@ void TcpConnection::handleWrite() {
 
 void TcpConnection::handleClose() {
     loop_->assertInLoopThread();
-    assert(state_ == kConnected || state_ ==kDisconnecting);
+    LOG_INFO("fd = %d state = %d",channel_->fd() , static_cast<int>(state_));
+    assert(state_ == kConnected || state_ == kDisconnecting);
     setState(kDisconnected);
     //不close fd ，这应该由析构函数来做，即智能指针释放
     channel_->disableAll();
@@ -190,10 +192,7 @@ void TcpConnection::shutdownInLoop() {
     loop_->assertInLoopThread();
     if(!channel_->isWriting()) {
         socket_->shutdownWrite();
+        //::close(channel_->fd());
     }
 }
-
-
-
-
 

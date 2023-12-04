@@ -9,5 +9,5 @@ set(CMAKE_CXX_FLAGS -g )
 
 add_library(mymuduo ${SRC_LIST} include/EventLoopThread.h)
 
-#add_subdirectory(test)
-add_subdirectory(demo)
+add_subdirectory(test)
+#add_subdirectory(demo)

@@ -1,7 +1,10 @@
 # mymuduo
+
+
+
 ## nocopyable
 
-<img src=".\img\AIDL Framwork.png" alt="&quot;D:\github\mymuduo\img\AIDL Framwork.png&quot;" style="zoom:150%;" />
+<img src=".\img\AIDL Framwork.png" alt="&quot;\img\AIDL Framwork.png&quot;" style="zoom:150%;" />
 
 当派生类定义了拷贝或移动构造函数，必须显式地调用基类的拷贝或移动构造函数，否则会调用基类的默认构造函数
 
@@ -124,7 +127,7 @@ listen fd，有新连接请求，\**对端发送普通数据\** 触发EPOLLIN。
 对端正常关闭（程序里close()，shell下kill或ctr+c），触发EPOLLIN和EPOLLRDHUP，但是不触发EPOLLERR 和EPOLLHUP
 对端异常断开连接（只测了拔网线），没触发任何事件
 
-![](D:\github\mymuduo\img\Snipaste_2023-11-10_22-30-57.png)
+![](.\img\Snipaste_2023-11-10_22-30-57.png)
 
 > tie() 是如何被触发的？
 
@@ -209,7 +212,7 @@ eventfd支持`poll`、`select`、`epoll`等类似操作。
 
 
 
-### Thread
+## Thread
 
 当类成员需要线程对象时，不可以直接使用线程对象，而是使用指向线程对象的指针，因为`std::thread`一旦创建线程就开启了
 
@@ -219,7 +222,7 @@ eventfd支持`poll`、`select`、`epoll`等类似操作。
 
 陈硕大神使用了自实现的互斥锁，条件变量，以及计数门杉
 
-### EventLoopThread
+## EventLoopThread
 
 **one loop pre thread 代码体现**
 
@@ -271,7 +274,7 @@ void EventLoopThread::threadFunc() {    //在单独的新线程内运行
 
 
 
-### EventLoopThreadPool
+## EventLoopThreadPool
 
 ```c++
 void EventLoopThreadPool::start(const ThreadInitCallback& cb)
@@ -304,7 +307,7 @@ C/C++语法规范中，不能使用变量定义数组维数，因为数组维数
 >
 > 调用此函数，有没有可能导致 EventLoop的析构函数被重复调用
 
-### Socket
+## Socket
 
 TCP连接的TIME_WAIT状态，服务器程序可以通过设置`socket`选项`SO_REUSEADDR`来强制使用被处于` TIME_WAIT`状态的连接占用的`socket`地址
 
@@ -397,7 +400,7 @@ ssize_t writev(int fd, const struct iovec *iov, int iovcnt);
 
 
 
-### TcpConnection
+## TcpConnection
 
 EPIPE / ECONNRESET
 
@@ -407,9 +410,77 @@ EPIPE / ECONNRESET
 
 
 
+## 问题及解决：
+
+运行后用nc连接时发现无法连接，调试跟进`TcpServer::start`方法，并没有执行`threadPool_->start(threadInitCallback_);`找到原因TcpServer中没有初始化 started_ 参数
 
 
 
+在loop开始之前就已经注册了两个channel，和我想象的不太一样，我觉得应该只有`AcceptChannel`，调试一下。
+
+```
+[INFO]2023/12/01 11:45:57/mnt/d/github/mymuduo/EventLoop.cc EventLoop 36 : EventLoop created 0x7ffe097728c0 in thread 1340
+[INFO]2023/12/01 11:45:57/mnt/d/github/mymuduo/EPollPoller.cc updateChannel 34 : fd= 4 events = 3 index = -1
+[INFO]2023/12/01 11:45:57/mnt/d/github/mymuduo/EPollPoller.cc update 82 : epoll_ctl_op=ADD fd=4 event=3
+[INFO]2023/12/01 11:45:57/mnt/d/github/mymuduo/EPollPoller.cc updateChannel 34 : fd= 5 events = 3 index = -1
+[INFO]2023/12/01 11:45:57/mnt/d/github/mymuduo/EPollPoller.cc update 82 : epoll_ctl_op=ADD fd=5 event=3
+[INFO]2023/12/01 11:45:57EventLoop 0x7ffe097728c0 start looping
+```
+
+原来是主loop在创建时，其成员wakeupFd被封装成了Channel注册在poller上
+
+
+
+在多次输入数据，或一次性输入较长数据后，将断言出错`test: /mnt/d/github/mymuduo/include/Buffer.h:72: void Buffer::retrieve(size_t): Assertion len <= readerIndex_' failed.`
+
+离谱错误：误将 readableBytes() 写为 
+
+```c++
+    void retrieve(size_t len) {
+        assert(len <= readerIndex_) ;
+        if(len < readableBytes()) {
+            readerIndex_ += len;
+        } else {
+            retrieveAll();
+        }
+    }
+```
+
+
+
+在输入内容后客户端主动断开连接服务端
+
+```c++
+void TcpConnection::handleClose() {
+    loop_->assertInLoopThread();
+    assert(state_ == kConnected || state_ ==kDisconnecting);
+```
+
+中断言状态不对，有可能状态被误设置，调试发现，
+
+```c++
+void onMessage(const TcpConnectionPtr& conn , Buffer* buf , Timestamp time) {
+    std::string msg = buf->retrieveAllAsString();
+    conn->send(msg.c_str() , msg.length());
+    conn->shutdown();
+}
+```
+
+在send完数据后，调用shutdown()，将TcpConnection状态设置为`kDisconnecting`，这是导致断言无法通过的原因，将其注释掉，二者均可正常运行。但是，为什么调用shutdown后客户端没有退出呢，继续调试，有可能是nc的问题
+
+```
+boolsatellite@boolsatellite:~$ netstat -tanp
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 127.0.0.1:8800          0.0.0.0:*               LISTEN      5520/test
+tcp        0      0 127.0.0.1:8800          127.0.0.1:47892         TIME_WAIT   -
+tcp        0      0 127.0.0.1:47894         127.0.0.1:8800          CLOSE_WAIT  5527/nc
+tcp        0      0 127.0.0.1:8800          127.0.0.1:47894         FIN_WAIT2   5520/test
+```
+
+初步判断是nc在收到FIN包后不返回FIN包，导致四次挥手无法完成，但奇怪的是在客户端中按下ctrl + c 后服务端将执行两次handleClose导致断言错误，暂时无法解决，调试有些困难。
 
 
 
